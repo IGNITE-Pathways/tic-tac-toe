@@ -98,6 +98,8 @@ while True:
             clicked_col = mouseX // SQUARE_SIZE
             if board[clicked_row][clicked_col] is None:
                 board[clicked_row][clicked_col] = player
+                draw_figures()
+                pygame.display.update()
                 if check_win(player):
                     game_over = True
                     display_winner(player_name)
@@ -105,7 +107,6 @@ while True:
                     player = 'O' if player == 'X' else 'X'
                     player_name = player2_name if player == 'O' else player1_name
                     pygame.display.set_caption(f"{player_name}'s Turn")
-                draw_figures()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_r:
                 restart_game()
