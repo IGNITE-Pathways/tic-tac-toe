@@ -1,6 +1,5 @@
 import pygame
 import sys
-import time
 
 # Initialize pygame
 pygame.init()
@@ -23,7 +22,6 @@ WINNER_FONT = pygame.font.SysFont('arial', 60)
 
 # Set up the display
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Tic Tac Toe')
 screen.fill(BG_COLOR)
 
 # Board
@@ -87,6 +85,7 @@ player = 'X'
 player_name = player1_name
 game_over = False
 draw_lines()
+pygame.display.set_caption(f"{player_name}'s Turn")
 
 while True:
     for event in pygame.event.get():
@@ -102,8 +101,10 @@ while True:
                 if check_win(player):
                     game_over = True
                     display_winner(player_name)
-                player = 'O' if player == 'X' else 'X'
-                player_name = player2_name if player == 'O' else player1_name
+                else:
+                    player = 'O' if player == 'X' else 'X'
+                    player_name = player2_name if player == 'O' else player1_name
+                    pygame.display.set_caption(f"{player_name}'s Turn")
                 draw_figures()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_r:
@@ -111,4 +112,5 @@ while True:
                 game_over = False
                 player = 'X'
                 player_name = player1_name
+                pygame.display.set_caption(f"{player_name}'s Turn")
     pygame.display.update()
