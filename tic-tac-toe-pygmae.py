@@ -18,6 +18,8 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 BG_COLOR = (28, 170, 156)
 LINE_COLOR = (23, 145, 135)
+FONT = pygame.font.SysFont('arial', 40)
+WINNER_FONT = pygame.font.SysFont('arial', 60)
 
 # Set up the display
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -57,6 +59,14 @@ def check_win(player):
         return True
     return False
 
+# Display winner
+def display_winner(player_name):
+    winner_text = f"{player_name} Wins!"
+    winner_label = WINNER_FONT.render(winner_text, True, (255, 255, 255))
+    screen.blit(winner_label, (WIDTH//4, HEIGHT//2 - 30))
+    pygame.display.update()
+    pygame.time.wait(3000)
+
 # Restart the game
 def restart_game():
     screen.fill(BG_COLOR)
@@ -65,11 +75,19 @@ def restart_game():
         for col in range(BOARD_COLS):
             board[row][col] = None
 
-draw_lines()
+# Capture player names
+def get_player_names():
+    player1_name = input("Enter Player 1 (X) name: ")
+    player2_name = input("Enter Player 2 (O) name: ")
+    return player1_name, player2_name
 
 # Main loop
+player1_name, player2_name = get_player_names()
 player = 'X'
+player_name = player1_name
 game_over = False
+draw_lines()
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -83,11 +101,14 @@ while True:
                 board[clicked_row][clicked_col] = player
                 if check_win(player):
                     game_over = True
+                    display_winner(player_name)
                 player = 'O' if player == 'X' else 'X'
+                player_name = player2_name if player == 'O' else player1_name
                 draw_figures()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_r:
                 restart_game()
                 game_over = False
                 player = 'X'
+                player_name = player1_name
     pygame.display.update()
